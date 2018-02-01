@@ -5,9 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email > login.sh
-      - chmod +x login.sh
-      - ./login.sh
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=0180273105745.dkr.ecr.us-east-1.amazonaws.com/ecr-lisaread
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
   build:
