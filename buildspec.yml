@@ -3,10 +3,6 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws --version
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      - REPOSITORY_URI=180273105745.dkr.ecr.us-east-1.amazonaws.com/ecr-lisaread 
       - echo getting the git hash $CODEBUILD_SOURCE_VERSION
       - echo $CODEBUILD_SOURCE_VERSION
       - IMAGE_TAG=$(echo $CODEBUILD_SOURCE_VERSION)
@@ -19,10 +15,5 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push ${REPOSITORY_URI}:latest
-      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
-      - echo Writing image definitions file...
-      - printf '[{"name":"web","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
